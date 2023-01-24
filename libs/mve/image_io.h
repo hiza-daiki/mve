@@ -278,6 +278,12 @@ load_mvei_file_headers (std::string const& filename);
 void
 save_mvei_file (ImageBase::ConstPtr image, std::string const& filename);
 
+void
+save_depth_file (ImageBase::ConstPtr image);
+
+void
+test_depth (ImageBase::ConstPtr image);
+
 MVE_IMAGE_NAMESPACE_END
 MVE_NAMESPACE_END
 

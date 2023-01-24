@@ -14,6 +14,7 @@
 #include <cstdarg>
 #include <cstring>
 #include <cerrno>
+#include <iostream>
 
 #ifndef MVE_NO_PNG_SUPPORT
 #   include <png.h>
@@ -1314,6 +1315,79 @@ save_mvei_file (ImageBase::ConstPtr image, std::string const& filename)
     out.write(reinterpret_cast<char const*>(&height), sizeof(int32_t));
     out.write(reinterpret_cast<char const*>(&channels), sizeof(int32_t));
     out.write(reinterpret_cast<char const*>(&type), sizeof(int32_t));
+    out.write(data, size);
+
+    if (!out.good())
+        throw util::FileException(filename, std::strerror(errno));
+}
+
+void
+save_depth_file (ImageBase::ConstPtr image)
+{
+    if (image == nullptr)
+        throw std::invalid_argument("Null image given");
+
+    std::string filename = "test";
+
+    // Note: This is a narrowing conversion.
+    int32_t width = static_cast<int32_t>(image->width());
+    int32_t height = static_cast<int32_t>(image->height());
+    int32_t channels = static_cast<int32_t>(image->channels());
+    int32_t type = image->get_type();
+    char const* data = image->get_byte_pointer();
+    std::size_t size = image->get_byte_size();
+
+    std::cout << "==================================================="<< std::endl;
+    std::cout << width << std::endl;
+    std::cout << height << std::endl;
+    std::cout << channels << std::endl;
+    std::cout << type << std::endl;
+    std::cout << size << std::endl;
+    std::cout << sizeof(int32_t) << std::endl;
+
+    // std::cout << data << std::endl;
+    std::cout << "---------------------------------------------------"<< std::endl;
+
+    std::ofstream out(filename.c_str(), std::ios::app);
+    if (!out.good())
+        throw util::FileException(filename, std::strerror(errno));
+
+    out.write(MVEI_FILE_SIGNATURE, MVEI_FILE_SIGNATURE_LEN);
+    out.write(reinterpret_cast<char const*>(&width), sizeof(int32_t));
+    out.write(reinterpret_cast<char const*>(&height), sizeof(int32_t));
+    out.write(reinterpret_cast<char const*>(&channels), sizeof(int32_t));
+    out.write(reinterpret_cast<char const*>(&type), sizeof(int32_t));
+    out.write(data, size);
+
+    if (!out.good())
+        throw util::FileException(filename, std::strerror(errno));
+}
+
+void
+test_depth (ImageBase::ConstPtr image)
+{
+    if (image == nullptr)
+        throw std::invalid_argument("Null image given");
+
+    std::string filename = "test2";
+
+    // Note: This is a narrowing conversion.
+    int32_t width = static_cast<int32_t>(image->width());
+    int32_t height = static_cast<int32_t>(image->height());
+    int32_t channels = static_cast<int32_t>(image->channels());
+    int32_t type = image->get_type();
+    char const* data = image->get_byte_pointer();
+    std::size_t size = image->get_byte_size();
+
+    std::ofstream out(filename.c_str(), std::ios::app);
+    if (!out.good())
+        throw util::FileException(filename, std::strerror(errno));
+
+    out.write(MVEI_FILE_SIGNATURE, MVEI_FILE_SIGNATURE_LEN);
+    out.write(reinterpret_cast<char const*>(&width), sizeof(int32_t));
+    out.write(reinterpret_cast<char const*>(&height), sizeof(int32_t));
+    // out.write(reinterpret_cast<char const*>(&channels), sizeof(int32_t));
+    // out.write(reinterpret_cast<char const*>(&type), sizeof(int32_t));
     out.write(data, size);
 
     if (!out.good())

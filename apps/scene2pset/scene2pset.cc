@@ -277,9 +277,16 @@ main (int argc, char** argv)
         if (cam.flen == 0.0f)
             continue;
 
+        math::Matrix3f inv_calib;
+        mve::CameraInfo const& testCam_info = view->get_camera();
+
+        testCam_info.fill_inverse_calibration(*inv_calib, 192.0, 256.0);
+        // mve::image::depthmap_convert_conventions<float>(depth_image, inv_calib, 
+        // true);
         mve::FloatImage::Ptr dm = view->get_float_image(conf.dmname);
         if (dm == nullptr)
             continue;
+        mve::image::depthmap_convert_conventions<float>(dm, inv_calib, true);
 
         if (conf.min_valid_fraction > 0.0f)
         {

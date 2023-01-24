@@ -37,7 +37,7 @@ View::load_view (std::string const& user_path)
     this->deprecated_format_check(safe_path);
 
     /* Open meta.ini and populate images and blobs. */
-    //std::cout << "View: Loading view: " << path << std::endl;
+    // std::cout << "View: Loading view: " << path << std::endl;
     this->clear();
     try
     {
@@ -855,6 +855,9 @@ View::save_image_intern (ImageProxy* proxy)
             std::dynamic_pointer_cast<ByteImage>(proxy->image), fname_new);
     else
         image::save_mvei_file(proxy->image, fname_new);
+        std::cout << fname_new << std::endl;
+        // image::save_depth_file(proxy->image);
+        // image::test_depth(proxy->image);
 
     /* On succesfull write, move the new file in place. */
     this->replace_file(fname_save, fname_new);
