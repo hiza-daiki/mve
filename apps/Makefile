@@ -12,6 +12,7 @@ all:
 	$(MAKE) -C meshclean
 	$(MAKE) -C sceneupgrade
 	$(MAKE) -C prebundle
+	$(MAKE) -C genimg
 
 clean:
 	$(MAKE) -C bundle2pset $@
@@ -27,6 +28,7 @@ clean:
 	$(MAKE) -C meshclean $@
 	$(MAKE) -C sceneupgrade $@
 	$(MAKE) -C prebundle $@
+	$(MAKE) -C genimg $@
 
 BINDIR ?= $(HOME)/bin/
 APPDIR := $(shell pwd)
@@ -46,5 +48,6 @@ links:
 	ln -si $(APPDIR)/sceneupgrade/sceneupgrade $(BINDIR)
 	ln -si $(APPDIR)/prebundle/prebundle $(BINDIR)
 	ln -si $(APPDIR)/umve/umve $(BINDIR)
+	ln -si $(APPDIR)/genimg/genimg $(BINDIR)
 
 .PHONY: all clean links
